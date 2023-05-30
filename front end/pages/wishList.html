@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style/style.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            
+            <h1><a href="searchResultPage.html">Discount Scanner</a></h1>
+            <h1>Wish List</h1>
+            <hr>
+
+        </div>
+        <div class="cardContainer">
+            <div v-for="product in products" :key="Math.floor(Math.random() * 1000)*Date.now()">
+                <div class="cart">
+                    <div class="placeholder">
+                        <img class="productImg" :src="product.img_url" alt="productImg">
+                    </div>
+                    
+                    <a :href="product.url">
+                        <span class="productDescription">{{product.description}}</span>
+                        <p class="productDescription">{{product.price}}</p>
+                    </a>
+
+                    <button class="removeButton" v-on:click="removeFromWishList(product.id)">Remove</button>
+                </div>
+            </div>
+        </div>
+        <h1>Recommendations:</h1>
+
+        <div class="cardContainer">
+            <div v-for="product in recommendations" :key="Math.floor(Math.random() * 1000)*Date.now()">
+                <div class="cart">
+                    <div class="placeholder">
+                        <img class="productImg" :src="product.img_url" alt="productImg">
+                    </div>
+                    <a :href="product.url">
+                        <span class="productDescription">{{product.description}}</span>
+                        <p class="productDescription">{{product.price}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        let app = new Vue({ // the root Vue instance
+            el: '#app', // this links to the <div> with the ID #app
+            data: {
+                products: undefined,
+                recommendations: []
+            },
+            methods: {
+                async getRecommendations() {
+                    try {
+                        const response = await fetch("http://scraper-env.eba-ff2vr5uj.us-east-1.elasticbeanstalk.com/recommendations", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ products: this.products })
+                        });
+                        let data = await response.json();
+                        let wishList = this.products;
+                        
+                        for (const iterator of wishList) 
+                            data = data.filter(e => e.id != iterator.id )
+                    
+                        this.recommendations = data;
+
+                        // Handle the response
+                    } catch (error) {
+                        console.log("error" + error)
+                        // Handle the error
+                    }
+                },
+                async removeFromWishList(id) {
+                    const updatedProducts = this.products.filter(item => item.id !== id);
+                    this.products = updatedProducts;
+                    localStorage.setItem("wishList", JSON.stringify(updatedProducts))
+                    this.getRecommendations();
+                },
+            },
+            beforeMount() {
+                let wishList = JSON.parse(localStorage.getItem("wishList"))
+                if (wishList != undefined) {
+                    this.products = wishList;
+                }
+                this.getRecommendations();
+            },
+
+        })
+    </script>
+</body>
+
+</html>

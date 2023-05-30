@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <title>DiscountScanner</title>
+</head>
+
+<body>
+    <div id="app">
+            <h1>Discount Scanner</h1>
+            <hr>
+        <div class="appWrap">
+            <div class="descriptionWrap">
+                <h1>The best way to premium brands on sale</h1>
+                <p class="description">
+                    Discount scanner is a price comparison website that finds only deals that are currently on sale
+                    It displays premium brands of high quality wear,to buy and item click on the product to be redirected.
+                </p>
+            </div>
+            <div class="searchCard">
+                <div class="cardElementsWrap">
+                    <h4>
+                        Type category name,brand, or color
+                    </h4>
+                    <p >Quick search</p>
+                    <hr>
+                    <input type="text" class="searchInputsHomePage" v-model="searchQuery"> 
+                        <button v-on:click="redirectAndSearch()" class="searchButton">
+                            <span>
+                                Search
+                            </span>
+                        </button>
+                </div>
+            </div>
+    </div>
+</div>
+    <script>
+        let app = new Vue({ // the root Vue instance
+            el: '#app', // this links to the <div> with the ID #app
+            data: {
+                searchQuery:null
+            },
+            computed: {
+                redirectAndSearch() {
+                    window.location.href = "./searchResultPage.html?stringQuery="+this.searchQuery;
+            }
+            }
+        })
+    </script>
+</body>
+</html>

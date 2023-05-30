@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+
+            <h1>Discount Scanner</h1>
+            <div class="navButtonsWrap">
+                <div class="navButtons">
+                    <button v-on:click="getCategory(`tShirt`)">T-Shirt</button>
+                    <button v-on:click="getCategory(`sweatshirt`)">Sweatshirts</button>
+                    <button v-on:click="getCategory(`shirt`)">Shirts</button>
+                    <button v-on:click="getCategory(`jacket`)">Jackets</button>
+                    <button v-on:click="getCategory(`joggers`)">Joggers</button>
+                </div>
+                <a :href="'./wishList.html'">
+                    Wish List
+                </a>
+            </div>
+            <hr>
+            <div class="searchBar">
+                <input type="text" class="searchInput" v-model="searchQuery">
+                <button id="searchButton" v-on:click="search(searchQuery)">Search</button>
+            </div>
+
+        </div>
+        <div class="cardContainer">
+            <div id="cardWrap" v-for="product in products" :key="Math.floor(Math.random() * 1000)*Date.now()">
+                <div class="cart">
+                        <button  class="heart-button" v-on:click='addToWishList(product)'>
+                                <svg :id="product.id" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="transparent" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                                  <path d="M20.84 4.59a5.5 5.5 0 0 0-7.78 0l-.62.62-.62-.62a5.5 5.5 0 0 0-7.78 7.78L12 19.94l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                              </button>
+                    <div class="placeholder">
+                        
+                        <img class="productImg" :src="product.img_url" alt="productImg">
+                    </div>
+                    <a :href="product.url">
+                        <span class="productDescription">{{product.description}}</span>
+                        <p class="productDescription">{{product.price}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <button v-if="products.length>1" class="loadMoreButton" v-on:click='getCategory(category)'>Load more</button>
+    </div>
+    <script>
+        let app = new Vue({ // the root Vue instance
+            el: '#app', // this links to the <div> with the ID #app
+            data: {
+                searchQuery: null,
+                products: [],
+                page: 1,
+                category: undefined
+            },
+            methods: {
+                async addToWishList(product) {
+                    let wishList = JSON.parse(localStorage.getItem("wishList"));
+                    if (wishList == undefined) {
+                        wishList = [product]
+                    }
+                    else {
+                        wishList.push(product)
+                    }
+                    const arrUniq = [...new Map(wishList.map(v => [v.id, v])).values()]
+                    // wishList = [...new Set(wishList)];
+                    wishList = localStorage.setItem("wishList", JSON.stringify(arrUniq))
+               
+                    document.getElementById(product.id).style.fill = "#DC143C";
+                },
+                async search(searchQuery) {
+                    if (searchQuery) {
+                        // changing param value in URL
+                        window.history.replaceState(null, null, '?stringQuery=' + searchQuery);
+                        const response = await fetch("http://scraper-env.eba-ff2vr5uj.us-east-1.elasticbeanstalk.com/search?searchString="+searchQuery);
+                        const data = await response.json();
+                        this.products = data;
+
+                    }
+                },
+                async getCategory(category) {
+                    let html ='';
+                    if(this.category != category)
+                    { 
+                        this.products = [];
+                        document.getElementsByClassName("cardContainer")[0].innerHTML = '';
+                        this.page = 1;
+                    }
+                    if(category)
+                        this.category = category
+                    else
+                        category = this.category;
+                  
+                    let page = this.page;
+                    try {
+                        const response = await fetch("http://scraper-env.eba-ff2vr5uj.us-east-1.elasticbeanstalk.com/category", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ category,page })
+                        });
+                        const data = await response.json();
+                        if(data.length == 0 && document.getElementsByClassName("loadMoreButton")[0]){ 
+                         document.getElementsByClassName("loadMoreButton")[0].innerText = "No More Results"
+                        }
+                        if(this.products.length>1){ 
+                        // this.products =  this.products.concat(data);
+                        for (const product of data) {
+                            html = html+` 
+                            <div id="cardWrap" >
+                            <div class="cart">
+                        <button  class="heart-button" v-on:click='addToWishList(product)'>
+                                <svg :id=`+product.id+` xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="transparent" stroke="#A9A9A9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
+                                  <path d="M20.84 4.59a5.5 5.5 0 0 0-7.78 0l-.62.62-.62-.62a5.5 5.5 0 0 0-7.78 7.78L12 19.94l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                              </button>
+                    <div class="placeholder">
+                        
+                        <img class="productImg" src="`+product.img_url+`" alt="productImg">
+                    </div>
+                    <a href="`+product.url+`">
+                        <span class="productDescription">`+product.description+`</span>
+                        <p class="productDescription">`+product.price+`</p>
+                    </a>
+                </div>
+            </div>
+                `
+                        }
+                        document.getElementsByClassName("cardContainer")[0].innerHTML += html;
+                    
+                    }
+                        else
+                        this.products =  data;
+                        this.page++;
+                        // Handle the response
+                    } catch (error) {
+                        console.log("error" + error)
+                        // Handle the error
+                    }
+                },
+                async product() {
+                    if (this.searchQuery) {
+                        let params = new URLSearchParams(document.location.search);
+                        let urlObj = url.parse(urlStr, true);
+
+                        //Split the path of the request into its components
+                        let pathArray = urlObj.pathname.split('/');
+
+                        //Return the last part of the path
+                        let searchedId = pathArray[pathArray.length - 1];
+                        const response = await fetch("http://scraper-env.eba-ff2vr5uj.us-east-1.elasticbeanstalk.com/products/" + searchedId);
+                        const data = await response.json();
+                    }
+                }
+            },
+            beforeMount() {
+                let params = new URLSearchParams(document.location.search);
+                let stringToSearch = params.get("stringQuery");
+                this.searchQuery = stringToSearch;
+                this.getCategory(`jacket`)
+                // this.search("");
+
+            },
+
+        })
+    </script>
+</body>
+
+</html>

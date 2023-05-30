@@ -1,0 +1,218 @@
+body{
+  background-color: rgb(253, 252, 252);
+  font-family: Arial, Helvetica, sans-serif;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.cart{
+    width: 300px;
+    min-height: 200px;
+    border-radius: 20px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: rgba(50, 50, 93, 0.3) 0px 50px 100px -5px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.1) 0px -2px 6px 0px inset;
+    background-color: transparent;
+}
+.cart>p{
+    margin-top: 3px;
+    margin-left: 50px;
+}
+.cart>a{
+  text-decoration: none;
+  color: black;
+  text-align: center;
+
+
+}
+button{
+    display: flex;
+    margin-bottom: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border-radius: 5px;
+}
+.searchButton{
+    width: 300px;
+    height: 50px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border: 1px solid rgb(173, 173, 173) ; 
+    cursor: pointer;
+}
+.loadMoreButton{
+  margin: auto;
+  border: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  font-size: 16px;
+}
+.cardElementsWrap{
+  text-align: center;
+}
+.searchInputsHomePage{
+    width: 400px;
+    height: 40px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 2px;
+
+}
+.searchInput{
+    width: 600px;
+    height: 40px;
+}
+.searchButton { 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: 50px;
+}
+.searchButton span{ 
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.searchCard{
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+.cardContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.description{
+    font-size: 20px;
+}
+.appWrap{
+    display: flex;
+    justify-content: space-around;
+}
+
+.descriptionWrap{
+    width: 600px;
+    margin-top: 100px;
+
+}
+.placeholder{
+  width: auto;
+  height:auto;;
+  background-color:#ccc;
+  border-radius: 15px; 
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.productDescription{
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+.productImg{
+  width: 100%;
+  border-radius: 7px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.productUrl{
+  outline: none;
+  text-decoration: none;
+  color: black;
+}
+.searchBar{
+  display: flex;
+}
+.searchBar>button{
+
+  display: inline;
+  border: none;
+  margin-left: 20px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.searchBar>button:hover{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+}
+.navButtons{
+  display: flex;
+  flex-wrap: wrap;
+}
+.navButtons > button{
+  margin: 10px;
+  color: black;
+}
+.navButtonsWrap {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.heart-button{
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 20px;
+  position: absolute;
+  margin-left: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.heart-button:hover{
+  background-color: rgb(212, 212, 212);
+}
+.navButtons > button{
+    display: inline;
+    border: none;
+    margin-left: 20px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    font-size: 16px;
+
+}
+.navButtonsWrap > a{
+    border: none;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    font-size: 16px;
+    text-decoration: none;
+    height: 20px;
+    border-radius: 10px;
+    color: black;
+}
+.navButtonsWrap > a:hover{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+}
+.navButtons > button:hover{
+box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+}
+.removeButton{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  text-decoration: none;
+  border: none;
+  margin-bottom: 10px;
+
+}
+@media (max-width:650px) { 
+  .navButtons{
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    color: black;
+  }
+  .navButtonsWrap{
+    display: flex;
+    justify-content: right;
+    flex-wrap: wrap;
+    /* display: block; */
+  }
+ } 
