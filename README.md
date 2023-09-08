@@ -1,1 +1,1 @@
-http://mobile-cw2.s3.amazonaws.com/pages/searchResultPage.html
+https://dumitru-stratulat.github.io/discount-scanner-front-end/pages/searchResultPage.html
